@@ -1,0 +1,524 @@
+/* 基本設定 */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f6f3;
+    --bg-sidebar: #fbfaf8;
+    --text-primary: #37352f;
+    --text-secondary: #787774;
+    --border-color: #e9e9e7;
+    --hover-bg: #f1f1ef;
+    --primary-color: #2383e2;
+    --block-hover: rgba(55, 53, 47, 0.08);
+    --code-bg: #f4f4f4;
+    --quote-border: #e9e9e7;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #191919;
+    --bg-secondary: #202020;
+    --bg-sidebar: #252525;
+    --text-primary: #e6e6e5;
+    --text-secondary: #979593;
+    --border-color: #373737;
+    --hover-bg: #2f2f2f;
+    --primary-color: #4a9eff;
+    --block-hover: rgba(255, 255, 255, 0.08);
+    --code-bg: #2f2f2f;
+    --quote-border: #373737;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* レイアウト */
+.app-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* サイドバー */
+.sidebar {
+    width: 240px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+}
+
+.sidebar-header {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-actions {
+    padding: 12px;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: var(--hover-bg);
+}
+
+/* ページツリー */
+.page-tree {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.page-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.page-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.page-item.active {
+    background-color: var(--hover-bg);
+    font-weight: 600;
+}
+
+.page-item-icon {
+    margin-right: 8px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.page-item-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.page-children {
+    margin-left: 16px;
+}
+
+/* メインコンテンツ */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bg-primary);
+}
+
+.page-header {
+    padding: 40px 96px 20px;
+}
+
+.page-title {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 40px;
+    font-weight: 700;
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.page-title::placeholder {
+    color: var(--text-secondary);
+}
+
+/* エディタコンテナ */
+.editor-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 96px 100px;
+}
+
+/* ブロック */
+.block {
+    position: relative;
+    margin-bottom: 1px;
+    padding: 3px 0;
+    transition: background-color 0.2s;
+    min-height: 32px;
+}
+
+.block::before {
+    content: '';
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 50px;
+    height: 100%;
+    pointer-events: none;
+}
+
+.block:hover {
+    background-color: var(--block-hover);
+}
+
+.block-content {
+    position: relative;
+    padding-left: 24px;
+}
+
+.block-type-actions {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    gap: 4px;
+}
+
+.block:hover .block-type-actions {
+    display: flex;
+}
+
+.block-type-btn {
+    font-size: 12px;
+}
+
+
+.block.dragging {
+    opacity: 0.5;
+}
+
+.block-actions {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: none;
+    gap: 4px;
+}
+
+.block:hover .block-actions {
+    display: flex;
+}
+
+/* ブロックタイプ別スタイル */
+.block-text {
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 32px;
+    outline: none;
+    padding: 8px 0;
+    width: 100%;
+}
+
+.block-heading1 {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    outline: none;
+    min-height: 40px;
+    padding: 3px 0;
+}
+
+.block-heading2 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    outline: none;
+    min-height: 32px;
+    padding: 3px 0;
+}
+
+.block-heading3 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    outline: none;
+    min-height: 28px;
+    padding: 3px 0;
+}
+
+.block-bullet,
+.block-numbered {
+    padding-left: 28px;
+    position: relative;
+    outline: none;
+    min-height: 24px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.block-bullet::before {
+    content: "•";
+    position: absolute;
+    left: 8px;
+}
+
+.block-numbered {
+    counter-increment: list-counter;
+}
+
+.block-numbered::before {
+    content: counter(list-counter) ".";
+    position: absolute;
+    left: 0;
+}
+
+.block-todo {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.todo-checkbox {
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.todo-content {
+    flex: 1;
+    outline: none;
+}
+
+.todo-content.completed {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.block-code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    background-color: var(--code-bg);
+    padding: 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    outline: none;
+}
+
+.block-quote {
+    border-left: 3px solid var(--quote-border);
+    padding-left: 16px;
+    font-style: italic;
+    color: var(--text-secondary);
+    outline: none;
+}
+
+.block-divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 16px 0;
+}
+
+/* ブロック追加ボタン */
+.add-block-container {
+    padding: 0 96px 40px;
+}
+
+.btn-add-block {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-add-block:hover {
+    background-color: var(--hover-bg);
+}
+
+/* スラッシュコマンドメニュー */
+.slash-menu {
+    position: absolute;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* ブロックタイプ選択メニュー */
+.block-type-menu {
+    position: absolute;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.block-type-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    font-size: 14px;
+}
+
+.block-type-menu-item:hover,
+.block-type-menu-item.selected {
+    background-color: var(--hover-bg);
+}
+
+.block-type-menu-item i {
+    width: 16px;
+    text-align: center;
+}
+
+.block-type-menu-item span {
+    flex: 1;
+}
+
+.slash-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.slash-menu-item:hover,
+.slash-menu-item.selected {
+    background-color: var(--hover-bg);
+}
+
+.slash-menu-title {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.slash-menu-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        z-index: 100;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .page-header,
+    .editor-container,
+    .add-block-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .page-title {
+        font-size: 28px;
+    }
+}
+
+/* ドラッグ中のスタイル */
+.drag-over {
+    border-top: 2px solid var(--primary-color);
+}
+
+/* カスタムボタンスタイル */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* スクロールバー */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}

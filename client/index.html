@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notion Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">
+                    <i class="fas fa-book"></i>
+                    My Workspace
+                </h2>
+                <button class="btn-icon" id="theme-toggle" title="ダークモード切替">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-actions">
+                <button class="btn btn-primary btn-sm w-100" id="new-page-btn">
+                    <i class="fas fa-plus"></i> 新規ページ
+                </button>
+            </div>
+            
+            <nav class="page-tree" id="page-tree">
+                <!-- ページツリーがここに動的に生成されます -->
+            </nav>
+        </aside>
+        
+        <!-- メインコンテンツエリア -->
+        <main class="main-content">
+            <div class="page-header">
+                <input type="text" class="page-title" id="page-title" placeholder="無題" />
+            </div>
+            
+            <div class="editor-container" id="editor-container">
+                <!-- ブロックがここに動的に生成されます -->
+            </div>
+            
+            <!-- ブロック追加ボタン -->
+            <div class="add-block-container">
+                <button class="btn-add-block" id="add-block-btn">
+                    <i class="fas fa-plus"></i> ブロックを追加
+                </button>
+            </div>
+        </main>
+    </div>
+    
+    <!-- スラッシュコマンドメニュー -->
+    <div class="slash-menu" id="slash-menu" style="display: none;">
+        <div class="slash-menu-item" data-block-type="text">
+            <i class="fas fa-align-left"></i>
+            <div>
+                <div class="slash-menu-title">テキスト</div>
+                <div class="slash-menu-desc">通常の段落テキスト</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="heading1">
+            <i class="fas fa-heading"></i>
+            <div>
+                <div class="slash-menu-title">見出し1</div>
+                <div class="slash-menu-desc">大見出し</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="heading2">
+            <i class="fas fa-heading"></i>
+            <div>
+                <div class="slash-menu-title">見出し2</div>
+                <div class="slash-menu-desc">中見出し</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="heading3">
+            <i class="fas fa-heading"></i>
+            <div>
+                <div class="slash-menu-title">見出し3</div>
+                <div class="slash-menu-desc">小見出し</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="bullet">
+            <i class="fas fa-list"></i>
+            <div>
+                <div class="slash-menu-title">箇条書きリスト</div>
+                <div class="slash-menu-desc">順序なしリスト</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="numbered">
+            <i class="fas fa-list-ol"></i>
+            <div>
+                <div class="slash-menu-title">番号付きリスト</div>
+                <div class="slash-menu-desc">順序付きリスト</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="todo">
+            <i class="fas fa-check-square"></i>
+            <div>
+                <div class="slash-menu-title">To-Do リスト</div>
+                <div class="slash-menu-desc">チェックボックス付きリスト</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="code">
+            <i class="fas fa-code"></i>
+            <div>
+                <div class="slash-menu-title">コードブロック</div>
+                <div class="slash-menu-desc">コードスニペット</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="quote">
+            <i class="fas fa-quote-left"></i>
+            <div>
+                <div class="slash-menu-title">引用</div>
+                <div class="slash-menu-desc">引用ブロック</div>
+            </div>
+        </div>
+        <div class="slash-menu-item" data-block-type="divider">
+            <i class="fas fa-minus"></i>
+            <div>
+                <div class="slash-menu-title">区切り線</div>
+                <div class="slash-menu-desc">水平線</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ブロックタイプ選択メニュー -->
+    <div class="block-type-menu" id="block-type-menu" style="display: none;">
+        <div class="block-type-menu-item" data-block-type="text">
+            <i class="fas fa-align-left"></i>
+            <span>テキスト</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="heading1">
+            <i class="fas fa-heading"></i>
+            <span>見出し1</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="heading2">
+            <i class="fas fa-heading"></i>
+            <span>見出し2</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="heading3">
+            <i class="fas fa-heading"></i>
+            <span>見出し3</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="bullet">
+            <i class="fas fa-list"></i>
+            <span>箇条書き</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="numbered">
+            <i class="fas fa-list-ol"></i>
+            <span>番号付き</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="todo">
+            <i class="fas fa-check-square"></i>
+            <span>To-Do</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="code">
+            <i class="fas fa-code"></i>
+            <span>コード</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="quote">
+            <i class="fas fa-quote-left"></i>
+            <span>引用</span>
+        </div>
+        <div class="block-type-menu-item" data-block-type="divider">
+            <i class="fas fa-minus"></i>
+            <span>区切り線</span>
+        </div>
+    </div>
+    
+    <script src="api.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
