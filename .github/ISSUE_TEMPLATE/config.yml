@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💡 開発ガイド (Development Guide)
+    url: https://github.com/[your-username]/notion-clone/blob/main/docs/DEVELOPMENT_GUIDE.md
+    about: Android開発者向けのWeb開発ガイドはこちら
+  - name: 📚 プロジェクト詳細 (Project Context)
+    url: https://github.com/[your-username]/notion-clone/blob/main/CLAUDE.md
+    about: Claudeとの開発で使用するプロジェクトコンテキストはこちら
+  - name: 🚀 Claude Code実行
+    url: https://claude.ai/code
+    about: Claude Codeで直接実装を依頼する場合はこちら
