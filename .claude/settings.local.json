@@ -10,7 +10,11 @@
       "Bash(curl:*)",
       "Bash(sqlite3:*)",
       "Bash(chmod:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(brew install:*)",
+      "Bash(gh auth:*)",
+      "Bash(gh issue create:*)",
+      "Bash(gh repo view:*)"
     ],
     "deny": []
   }
